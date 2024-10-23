@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.org.sonarqube)
 }
 
 android {
@@ -36,6 +37,14 @@ android {
     }
     buildFeatures {
         compose = true
+    }
+}
+
+sonarqube {
+    properties {
+        property("sonar.projectKey", System.getenv("SONAR_PROJECT_KEY"))
+        property("sonar.organization", System.getenv("SONAR_ORGANIZATION"))
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
 
