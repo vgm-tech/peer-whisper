@@ -2,12 +2,16 @@ package com.cezila.peerwhisper.feature.devicediscovery.presentation
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.cezila.peerwhisper.feature.devicediscovery.model.ConnectionInfo
 import com.cezila.peerwhisper.feature.devicediscovery.model.DeviceDiscoveryUiEvent
 import com.cezila.peerwhisper.feature.devicediscovery.model.DeviceDiscoveryUiState
 import com.cezila.peerwhisper.feature.wifidirect.IWifiDirectManager
 import com.cezila.peerwhisper.feature.wifidirect.model.WifiP2pDeviceModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,10 +56,19 @@ class DeviceDiscoveryViewModel @Inject constructor(
     }
 
     private fun connectToDevice(device: WifiP2pDeviceModel) {
+        wifiDirectManager.setConnectionInfoListener { info ->
+            _uiState.update {
+                it.copy(
+                    connectionInfo = ConnectionInfo(
+                        isGroupOwner = info.isGroupOwner,
+                        hostAddress = info.groupOwnerAddress.hostAddress ?: ""
+                    )
+                )
+            }
+        }
+
         wifiDirectManager.connectToDevice(device,
-            onSuccess = {
-                // Handle successful connection initiation if needed
-            },
+            onSuccess = {},
             onFailure = { reason ->
                 val errorMsg = "Failed to connect: $reason"
                 showErrorMessage(errorMsg)

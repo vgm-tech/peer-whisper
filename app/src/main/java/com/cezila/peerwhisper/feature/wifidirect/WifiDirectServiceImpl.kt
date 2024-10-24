@@ -17,7 +17,7 @@ class WifiDirectServiceImpl @Inject constructor(
 ) : IWifiDirectService {
 
     companion object {
-        private const val SERVICE_INSTANCE = "MyAppService"
+        private const val SERVICE_INSTANCE = "PeerWhisperService"
         private const val SERVICE_REG_TYPE = "_presence._tcp"
     }
 
