@@ -5,5 +5,6 @@ import com.cezila.peerwhisper.feature.wifidirect.model.WifiP2pDeviceModel
 data class DeviceDiscoveryUiState(
     val isDiscovering: Boolean = false,
     val devices: List<WifiP2pDeviceModel> = emptyList(),
-    val errorMessage: String? = null
+    val errorMessage: String? = null,
+    val connectionInfo: ConnectionInfo? = null
 )
